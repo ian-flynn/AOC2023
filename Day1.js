@@ -7,7 +7,7 @@ let input = fs.readFileSync(
 );
 const inputArray = input.split('\n');
 
-// // Part 1
+// Part 1
 const partOne = (input) => {
   return input.reduce((acc, curr) => {
     //remove all non-numbers
@@ -24,20 +24,19 @@ const partOne = (input) => {
 console.log(partOne(inputArray));
 
 // Part 2
-
 const partTwo = (input) => {
   return input.reduce((acc, curr) => {
     //replace all word numbers with wordnumberword
     const replaced = curr
-      .replace('one', 'one1one')
-      .replace('two', 'two2two')
-      .replace('three', 'three3three')
-      .replace('four', 'four4four')
-      .replace('five', 'five5five')
-      .replace('six', 'six6six')
-      .replace('seven', 'seven7seven')
-      .replace('eight', 'eight8eight')
-      .replace('nine', 'nine9nine');
+      .replace(/one/g, 'o1e')
+      .replace(/two/g, 't2o')
+      .replace(/three/g, 't3e')
+      .replace(/four/g, '4')
+      .replace(/five/g, '5e')
+      .replace(/six/g, '6')
+      .replace(/seven/g, '7')
+      .replace(/eight/g, 'e8t')
+      .replace(/nine/g, 'n9e');
     //continue just like part one
 
     //remove all non-numbers
@@ -45,8 +44,6 @@ const partTwo = (input) => {
 
     //create two digit coordinate string
     const twoDigits = justDigits[0] + justDigits[justDigits.length - 1];
-
-    // console.log([curr, replaced, justDigits, twoDigits]);
 
     //turn string to integer and add to total
     acc += Number(twoDigits);
