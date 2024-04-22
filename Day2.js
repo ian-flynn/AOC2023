@@ -41,4 +41,4 @@ const partOne = (input) => {
   return total;
 };
 
-// console.log(partOne(inputArray));
+console.log(partOne(inputArray));
