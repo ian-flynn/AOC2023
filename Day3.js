@@ -1,4 +1,3 @@
-const { log } = require('console');
 const fs = require('fs');
 const path = require('path');
 
@@ -7,8 +6,6 @@ let input = fs.readFileSync(
   'utf8'
 );
 const inputArray = input.split('\n');
-
-// console.log(inputArray);
 
 const testInput = [
   '467..114..',
@@ -24,11 +21,10 @@ const testInput = [
 ];
 
 const partNumbers = (input) => {
-  const found = [];
+  const results = [];
 
   for (let row = 0; row < input.length; row++) {
     for (let col = 0; col < input[0].length; col++) {
-      // console.log(row, col);
       const element = input[row][col];
       if (isNaN(element)) continue;
 
@@ -38,31 +34,41 @@ const partNumbers = (input) => {
         end = col;
         col++;
       }
-      // console.log(input[row].slice(start, end + 1));
-
-      // console.log(input[4].slice(0 === 0 ? 0 : 0 - 1, 4 + 2));
-      console.log(input[row].length);
       const top =
         row === 0
           ? ''
           : input[row - 1].slice(start === 0 ? 0 : start - 1, end + 2);
-
       const sides =
         (start === 0 ? '' : input[row][start - 1]) +
         (end === input[row].length - 1 ? '' : input[row][end + 1]);
-
-      const bottom = row === input.length - 1 ? '' : input[row + 1];
-
-      console.log(input[row].slice(start, end + 1), top, sides, bottom);
+      const bottom =
+        row === input.length - 1
+          ? ''
+          : input[row + 1].slice(start === 0 ? 0 : start - 1, end + 2);
+      if (
+        /[^.0-9]/.test(top) ||
+        /[^.0-9]/.test(sides) ||
+        /[^.0-9]/.test(bottom)
+      ) {
+        results.push(input[row].slice(start, end + 1));
+      }
     }
   }
-  return found;
+  return results;
 };
 
 const testArray = partNumbers(testInput);
 console.log(testArray);
 console.log(
   testArray.reduce((acc, curr) => {
+    return Number(acc) + Number(curr);
+  }, 0)
+);
+
+const resultArray = partNumbers(inputArray);
+console.log(resultArray);
+console.log(
+  resultArray.reduce((acc, curr) => {
     return Number(acc) + Number(curr);
   }, 0)
 );
