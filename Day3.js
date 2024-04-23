@@ -7,29 +7,29 @@ let input = fs.readFileSync(
 );
 const inputArray = input.split('\n');
 
-const testInput = [
-  '467..114..',
-  '...*......',
-  '..35..633.',
-  '......#...',
-  '617*......',
-  '.....+.588',
-  '..592.....',
-  '......755.',
-  '...$.*....',
-  '.664.598..',
-];
+// const testInput = [
+//   '467..114..',
+//   '...*......',
+//   '..35..633.',
+//   '......#...',
+//   '617*......',
+//   '.....+.588',
+//   '..592.....',
+//   '......755.',
+//   '...$.*....',
+//   '.664.598..',
+// ];
 
 const partNumbers = (input) => {
   const results = [];
 
   for (let row = 0; row < input.length; row++) {
     for (let col = 0; col < input[0].length; col++) {
-      const element = input[row][col];
-      if (isNaN(element)) continue;
+      if (isNaN(input[row][col])) continue;
 
-      let start = col;
-      let end = col;
+      let start = col,
+        end = col;
+
       while (!isNaN(input[row][col])) {
         end = col;
         col++;
@@ -45,11 +45,8 @@ const partNumbers = (input) => {
         row === input.length - 1
           ? ''
           : input[row + 1].slice(start === 0 ? 0 : start - 1, end + 2);
-      if (
-        /[^.0-9]/.test(top) ||
-        /[^.0-9]/.test(sides) ||
-        /[^.0-9]/.test(bottom)
-      ) {
+
+      if (/[^.0-9]/.test(top + sides + bottom)) {
         results.push(input[row].slice(start, end + 1));
       }
     }
@@ -57,13 +54,13 @@ const partNumbers = (input) => {
   return results;
 };
 
-const testArray = partNumbers(testInput);
-console.log(testArray);
-console.log(
-  testArray.reduce((acc, curr) => {
-    return Number(acc) + Number(curr);
-  }, 0)
-);
+// const testArray = partNumbers(testInput);
+// console.log(testArray);
+// console.log(
+//   testArray.reduce((acc, curr) => {
+//     return Number(acc) + Number(curr);
+//   }, 0)
+// );
 
 const resultArray = partNumbers(inputArray);
 console.log(resultArray);
