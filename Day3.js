@@ -27,8 +27,8 @@ const partNumbers = (input) => {
     for (let col = 0; col < input[0].length; col++) {
       if (isNaN(input[row][col])) continue;
 
-      let start = col,
-        end = col;
+      let start = col;
+      let end = col;
 
       while (!isNaN(input[row][col])) {
         end = col;
@@ -69,3 +69,5 @@ console.log(
     return Number(acc) + Number(curr);
   }, 0)
 );
+
+// 532428
