@@ -70,29 +70,9 @@ const partNumberSum = (input = []) => {
 
 const partTwo = (input = []) => {
   const nums = numberFinder(input);
-  const mapAdder = (map, row, col, partNumber) => {
-    console.log(partNumber, input[row][col]);
-    if (input[row][col] === '*') {
-      const key = `${row}, ${col}`;
-      map.set(key, (map.get(key) || []).concat(partNumber));
-    }
-  };
 
   return Array.from(
     nums.reduce((acc, curr) => {
-      const map2Adder = (map, row, col, partNumber, string, start, end) => {
-        console.log(partNumber, string);
-        for (let i = start; i < end; i++) {
-          // map2Adder(acc, row - 1, i, partNumber, top);
-
-          console.log(i);
-          console.log(input[row][i]);
-          if (input[row][col] === '*') {
-            const key = `${row}, ${col}`;
-            map.set(key, (map.get(key) || []).concat(partNumber));
-          }
-        }
-      };
       const {
         partNumber,
         row,
@@ -103,32 +83,26 @@ const partTwo = (input = []) => {
         bottom,
         left,
       } = curr;
+      const mapAdder = (row, start, end) => {
+        for (let i = start; i <= end; i++) {
+          if (input[row][i] === '*') {
+            const key = `${row}, ${i}`;
+            acc.set(key, (acc.get(key) || []).concat(partNumber));
+          }
+        }
+      };
 
       if (/[*]/.test(top)) {
-        for (let i = columnStart - 1; i <= columnEnd + 1; i++) {
-          mapAdder(acc, row - 1, i, partNumber);
-        }
-        // map2Adder(acc, row - 1, null, partNumber, top);
+        mapAdder(row - 1, columnStart - 1, columnEnd + 1);
       }
       if (/[*]/.test(right)) {
-        mapAdder(acc, row, columnEnd + 1, partNumber);
-        // map2Adder(
-        //   acc,
-        //   row,
-        //   columnEnd + 1,
-        //   partNumber,
-        //   right,
-        //   columnEnd + 1,
-        //   columnEnd + 2
-        // );
+        mapAdder(row, columnEnd + 1, columnEnd + 1);
       }
       if (/[*]/.test(bottom)) {
-        for (let i = columnStart - 1; i <= columnEnd + 1; i++) {
-          mapAdder(acc, row + 1, i, partNumber);
-        }
+        mapAdder(row + 1, columnStart - 1, columnEnd + 1);
       }
       if (/[*]/.test(left)) {
-        mapAdder(acc, row, columnStart - 1, partNumber);
+        mapAdder(row, columnStart - 1, columnStart - 1);
       }
       return acc;
     }, new Map())
@@ -138,5 +112,5 @@ const partTwo = (input = []) => {
   );
 };
 
-console.log(partTwo(testInput)); //467835
+// console.log(partTwo(testInput)); //467835
 // console.log(partTwo(inputArray)); //84051670
