@@ -53,7 +53,6 @@ const partNumbers = (input) => {
   }
   return results;
 };
-
 // const testArray = partNumbers(testInput);
 // console.log(testArray);
 // console.log(
@@ -73,7 +72,6 @@ const partNumbers = (input) => {
 // 532428
 
 const partTwo = (input) => {
-  // const results = [];
   const gearMap = new Map();
 
   for (let row = 0; row < input.length; row++) {
@@ -99,51 +97,34 @@ const partTwo = (input) => {
           : input[row + 1].slice(start === 0 ? 0 : start - 1, end + 2);
       const left = start === 0 ? '' : input[row][start - 1];
 
-      // if (/[^.0-9]/.test(top + right + bottom + left)) {
-      //   results.push(partNumber);
-      // }
+      const gearMapAdder = (row, col) => {
+        if (input[row][col] === '*') {
+          gearMap.has(`${row}, ${col}`)
+            ? gearMap.get(`${row}, ${col}`).push(Number(partNumber))
+            : gearMap.set(`${row}, ${col}`, [Number(partNumber)]);
+        }
+      };
 
       if (/[*]/.test(top)) {
-        // console.log(partNumber, top);
         for (let i = start - 1; i <= end + 1; i++) {
-          if (input[row - 1][i] === '*') {
-            // console.log(row, col);
-            gearMap.has(`${row - 1}, ${i}`)
-              ? gearMap.get(`${row - 1}, ${i}`).push(Number(partNumber))
-              : gearMap.set(`${row - 1}, ${i}`, [Number(partNumber)]);
-          }
+          gearMapAdder(row - 1, i);
         }
       }
       if (/[*]/.test(right)) {
-        // console.log(partNumber, right);
-        // console.log(input[row][end + 1]);
-        gearMap.has(`${row}, ${end + 1}`)
-          ? gearMap.get(`${row}, ${end + 1}`).push(Number(partNumber))
-          : gearMap.set(`${row}, ${end + 1}`, [Number(partNumber)]);
+        gearMapAdder(row, end + 1);
       }
       if (/[*]/.test(bottom)) {
-        // console.log(partNumber, bottom);
         for (let i = start - 1; i <= end + 1; i++) {
-          if (input[row + 1][i] === '*') {
-            // console.log(row + 1, i);
-            gearMap.has(`${row + 1}, ${i}`)
-              ? gearMap.get(`${row + 1}, ${i}`).push(Number(partNumber))
-              : gearMap.set(`${row + 1}, ${i}`, [Number(partNumber)]);
-          }
+          gearMapAdder(row + 1, i);
         }
       }
       if (/[*]/.test(left)) {
-        console.log(partNumber, left);
-        console.log(input[row][start - 1]);
-        gearMap.has(`${row}, ${start - 1}`)
-          ? gearMap.get(`${row}, ${start - 1}`).push(Number(partNumber))
-          : gearMap.set(`${row}, ${start - 1}`, [Number(partNumber)]);
+        gearMapAdder(row, start - 1);
       }
     }
   }
   let gearRatioSum = 0;
-  gearMap.forEach((partsArray, gearCordinates) => {
-    console.log(partsArray, gearCordinates);
+  gearMap.forEach((partsArray) => {
     if (partsArray.length == 2) {
       gearRatioSum += partsArray[0] * partsArray[1];
     }
@@ -152,3 +133,4 @@ const partTwo = (input) => {
 };
 
 console.log(partTwo(testInput)); //467835
+console.log(partTwo(inputArray)); //84051670
