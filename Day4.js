@@ -19,20 +19,27 @@ const findMatches = (input) => {
     });
 
     acc[name] = {
-      winningNumbers: new Set(winningNumbers),
-      myNumbers: new Set(myNumbers),
+      winningNumbers: winningNumbers,
+      myNumbers: myNumbers,
     };
     return acc;
   }, {});
-
+  let points = 0;
   for (const [card, info] of Object.entries(cards)) {
-    // console.log(card);
     const winners = [];
-    for (const winningNumber of info[winningNumbers]) {
+    for (const winningNumber of info.winningNumbers) {
+      if (info.myNumbers.includes(winningNumber)) {
+        winners.push(winningNumber);
+      }
     }
+    points += winners.reduce((acc, curr) => {
+      return !acc ? 1 : acc * 2;
+    }, 0);
   }
+  return points;
   // console.log(typeof cards);
   // console.log(cards);
 };
 
-findMatches(testInput);
+console.log(findMatches(testInput)); // 13
+console.log(findMatches(input)); // 23028
