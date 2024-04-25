@@ -13,32 +13,24 @@ const findMatches = (input) => {
   const cards = input.reduce((acc, curr) => {
     const [name, remainder] = curr.split(':');
 
-    // console.log(name);
     const [winningNumbers, myNumbers] = remainder.split('|').map((el) => {
       return el.split(' ').filter((el) => el !== '');
     });
-
     acc[name] = {
-      winningNumbers: winningNumbers,
-      myNumbers: myNumbers,
+      winningNumbers,
+      myNumbers,
     };
     return acc;
   }, {});
+
   let points = 0;
   for (const [card, info] of Object.entries(cards)) {
-    const winners = [];
-    for (const winningNumber of info.winningNumbers) {
-      if (info.myNumbers.includes(winningNumber)) {
-        winners.push(winningNumber);
-      }
-    }
-    points += winners.reduce((acc, curr) => {
-      return !acc ? 1 : acc * 2;
-    }, 0);
+    const matches = info.winningNumbers.filter((el) =>
+      info.myNumbers.includes(el)
+    );
+    points += matches.reduce((acc, curr) => (!acc ? 1 : acc * 2), 0);
   }
   return points;
-  // console.log(typeof cards);
-  // console.log(cards);
 };
 
 console.log(findMatches(testInput)); // 13
