@@ -33,5 +33,42 @@ const findMatches = (input) => {
   return points;
 };
 
-console.log(findMatches(testInput)); // 13
-console.log(findMatches(input)); // 23028
+// console.log(findMatches(testInput)); // 13
+// console.log(findMatches(input)); // 23028
+
+const countScratchcards = (input) => {
+  const cards = input.reduce((acc, curr) => {
+    const [name, remainder] = curr.split(':');
+
+    const [winningNumbers, myNumbers] = remainder.split('|').map((el) => {
+      return el.split(' ').filter((el) => el !== '');
+    });
+    acc.push({
+      name,
+      winningNumbers,
+      myNumbers,
+      numberOfCards: 1,
+    });
+    return acc;
+  }, []);
+
+  let totalScratchCards = 0;
+  for (let i = 0; i < cards.length; i++) {
+    totalScratchCards += cards[i].numberOfCards;
+    while (cards[i].numberOfCards) {
+      const matches = cards[i].winningNumbers.filter((el) =>
+        cards[i].myNumbers.includes(el)
+      );
+      let won = matches.length;
+      while (won) {
+        cards[i + won].numberOfCards++;
+        won--;
+      }
+      cards[i].numberOfCards--;
+    }
+  }
+  return totalScratchCards;
+};
+
+// console.log(countScratchcards(testInput)); // 30
+// console.log(countScratchcards(input)); //9236992
